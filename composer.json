@@ -1,0 +1,28 @@
+{
+    "name": "akuchalskij/event-emit-php",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "akuchalskij",
+            "email": "alex.k@upservice.io"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "php-di/php-di": "^6.1",
+        "doctrine/annotations": "^1.10",
+        "ocramius/proxy-manager": "~2.0",
+        "symfony/finder": "^5.0",
+        "symfony/http-kernel": "^5.0"
+    },
+    "require-dev": {
+        "monolog/monolog": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "EventEmitter\\": "src/",
+            "App\\": "app/"
+        }
+    }
+}
