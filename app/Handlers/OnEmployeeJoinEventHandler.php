@@ -10,7 +10,7 @@ use App\Events\EmployeeJoin;
 use EventEmitter\Annotations\EventHandler;
 
 /**
- * @EventHandler(name="EmployeeDismiss")
+ * @EventHandler(name="EmployeeJoin")
  */
 final class OnEmployeeJoinEventHandler implements EmployeeJoin
 {
