@@ -1,6 +1,6 @@
 <?php
 
-namespace EventEmitter;
+namespace EventEmitter\Common;
 
 class EventManager
 {

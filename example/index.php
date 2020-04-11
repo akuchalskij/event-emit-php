@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . "/vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 use DI\ContainerBuilder;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use App\Employee\Entity\Employee;
-use EventEmitter\EventManager;
+use App\Entity\Employee;
+use EventEmitter\Common\EventManager;
 
 AnnotationRegistry::registerLoader('class_exists');
 

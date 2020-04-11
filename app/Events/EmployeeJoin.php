@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Employee\Events;
+namespace App\Events;
 
-use App\Employee\Entity\Employee;
+use App\Entity\Employee;
 
 interface EmployeeJoin
 {

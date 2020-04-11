@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Employee\Handlers;
+namespace App\Handlers;
 
 
-use App\Employee\Entity\Employee;
-use App\Employee\Events\EmployeeJoin;
+use App\Entity\Employee;
+use App\Events\EmployeeJoin;
 use EventEmitter\Annotations\EventHandler;
 
 /**

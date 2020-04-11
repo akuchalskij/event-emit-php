@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EventEmitter;
+namespace EventEmitter\Common;
 
 use Doctrine\Common\Annotations\Reader;
 use EventEmitter\Annotations\EventHandler;

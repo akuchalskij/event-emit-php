@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Employee\Handlers;
+namespace App\Handlers;
 
 
 use EventEmitter\Annotations\EventHandler;
-use App\Employee\Entity\Employee;
-use App\Employee\Events\EmployeeDismiss;
+use App\Entity\Employee;
+use App\Events\EmployeeDismiss;
 
 /**
  * @EventHandler(name="EmployeeDismiss")
