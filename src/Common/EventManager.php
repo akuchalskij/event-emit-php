@@ -34,9 +34,8 @@ final class EventManager
     public function getEvent(string $name): string
     {
         $events = $this->getEvents();
-        if (isset($events[$name])) {
-            return $events[$name];
-        }
+
+        if (isset($events[$name])) return $events[$name];
 
         $this->logger->error("Event $events[$name] does not exist");
         throw new HandlerDoesNotExistsException();

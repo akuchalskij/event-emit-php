@@ -28,14 +28,10 @@ final class EventDiscover
 
     public function getEvents(): array
     {
-        if (!$this->events) {
-            $this->discoverEvents();
-        }
-
-        return $this->events;
+       return $this->events ? $this->events : $this->discoverEvents();
     }
 
-    private function discoverEvents()
+    private function discoverEvents(): array
     {
         $finder = new Finder();
         $finder->files()->in($this->path);
@@ -52,5 +48,7 @@ final class EventDiscover
 
             $this->events[$annotation->getName()][] = $class;
         }
+
+        return $this->getEvents();
     }
 }
