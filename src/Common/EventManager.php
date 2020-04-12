@@ -2,13 +2,44 @@
 
 namespace EventEmitter\Common;
 
-class EventManager
+use EventEmitter\Common\Exceptions\HandlerDoesNotExistsException;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+
+/**
+ * Class EventManager
+ * @package EventEmitter\Common
+ */
+final class EventManager
 {
+    private array $handlers = [];
+
     private EventDiscover $discover;
 
-    public function __construct(EventDiscover $discover)
+    private Logger $logger;
+
+    public function __construct(EventDiscover $discover, Logger $logger)
     {
         $this->discover = $discover;
+        $this->logger = $logger;
+
+        $this->logger->pushHandler(new StreamHandler(__DIR__ . '/../../var/events.log', Logger::WARNING));
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     * @throws HandlerDoesNotExistsException
+     */
+    public function getEvent(string $name): string
+    {
+        $events = $this->getEvents();
+        if (isset($events[$name])) {
+            return $events[$name];
+        }
+
+        $this->logger->error("Event $events[$name] does not exist");
+        throw new HandlerDoesNotExistsException();
     }
 
     public function getEvents(): array
@@ -16,29 +47,28 @@ class EventManager
         return $this->discover->getEvents();
     }
 
-    public function getEvent($name) {
-        $events = $this->discover->getEvents();
-        if (isset($events[$name])) {
-            return $events[$name];
-        }
+    /**
+     * @param string $name
+     * @return array
+     * @throws \Exception
+     */
+    public function create(string $name): array
+    {
+        foreach ($this->getEvents() as $key => $event) {
+            foreach ($event as $class) {
+                if ($key === $name) {
+                    if (!class_exists($class)) {
+                        $this->logger->error("Handler $class for event $name does not exist");
+                        throw new HandlerDoesNotExistsException();
+                    }
 
-        throw new \Exception('Event not found.');
-    }
+                    $this->logger->info("Handler $class for event $name successfully created");
 
-
-    public function create(string $name) {
-        $events = $this->getEvents();
-        if (array_key_exists($name, $events)) {
-            $class = $events[$name];
-
-            if (!class_exists($class)) {
-                throw new \Exception('Event class does not exist.');
+                    $this->handlers[] = new $class();
+                }
             }
-
-            return new $class();
         }
 
-        throw new \Exception('Event does not exist.');
+        return $this->handlers;
     }
-
 }

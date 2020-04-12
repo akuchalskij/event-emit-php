@@ -15,18 +15,15 @@ final class EventDiscover
 
     private string $namespace;
 
-    private string $directory;
+    private string $path;
 
     private Reader $reader;
 
-    private string $rootDir;
-
-    public function __construct($namespace, $directory, $rootDir, Reader $reader)
+    public function __construct(string $namespace, string $directory, string $rootDir, string $psr4Dir, Reader $reader)
     {
         $this->namespace = $namespace;
         $this->reader = $reader;
-        $this->directory = $directory;
-        $this->rootDir = $rootDir;
+        $this->path = $rootDir . $psr4Dir . $directory;
     }
 
     public function getEvents(): array
@@ -40,9 +37,8 @@ final class EventDiscover
 
     private function discoverEvents()
     {
-        $path = $this->rootDir . "/app/" . $this->directory . "/";
         $finder = new Finder();
-        $finder->files()->in($path);
+        $finder->files()->in($this->path);
 
         /** @var SplFileInfo $file */
         foreach ($finder as $file) {
@@ -54,7 +50,7 @@ final class EventDiscover
                 continue;
             }
 
-            $this->events[$annotation->getName()] = $class;
+            $this->events[$annotation->getName()][] = $class;
         }
     }
 }

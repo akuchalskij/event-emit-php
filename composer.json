@@ -11,8 +11,7 @@
     "require": {
         "php": "^7.4",
         "php-di/php-di": "^6.1",
-        "doctrine/annotations": "^1.10",
-        "ocramius/proxy-manager": "~2.0",
+        "doctrine/annotations": "^1.9",
         "symfony/finder": "^5.0",
         "symfony/http-kernel": "^5.0"
     },

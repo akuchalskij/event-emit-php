@@ -9,7 +9,7 @@ use Doctrine\Common\Annotations\Annotation;
  * @Annotation
  * @Target("CLASS")
  */
-class EventHandler
+final class EventHandler
 {
     /**
      * @Required

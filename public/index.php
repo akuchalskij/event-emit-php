@@ -6,8 +6,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 use DI\ContainerBuilder;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use App\Entity\Employee;
-use EventEmitter\Common\EventManager;
+
 
 AnnotationRegistry::registerLoader('class_exists');
 
@@ -15,15 +14,8 @@ $containerBuilder = new ContainerBuilder();
 
 $config = require __DIR__ . '/../config/services.php';
 
-$containerBuilder->useAutowiring(false);
-$containerBuilder->useAnnotations(false);
+$containerBuilder->useAutowiring(true);
+$containerBuilder->useAnnotations(true);
 $containerBuilder->addDefinitions($config);
 
 $container = $containerBuilder->build();
-
-$employee = new Employee("John Doe", "$0", "Not joined");
-
-$manager = $container->get(EventManager::class);
-
-$event = $manager->create('EmployeeDismiss');
-$event->handle($employee);

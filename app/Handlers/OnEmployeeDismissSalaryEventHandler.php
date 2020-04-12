@@ -6,17 +6,17 @@ namespace App\Handlers;
 
 
 use App\Entity\Employee;
+use App\Events\EmployeeDismiss;
 use App\Events\EmployeeJoin;
 use EventEmitter\Annotations\EventHandler;
 
 /**
- * @EventHandler(name="EmployeeJoin")
+ * @EventHandler(name="EmployeeDismiss")
  */
-final class OnEmployeeJoinEventHandler implements EmployeeJoin
+final class OnEmployeeDismissSalaryEventHandler implements EmployeeDismiss
 {
     public function handle(Employee $employee)
     {
-        $employee->role = "Joined";
-        $employee->salary = "$120'000";
+        $employee->salary = "0";
     }
 }

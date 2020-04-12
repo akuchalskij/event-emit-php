@@ -12,7 +12,7 @@ use App\Events\EmployeeDismiss;
 /**
  * @EventHandler(name="EmployeeDismiss")
  */
-final class OnEmployeeDismissEventHandler implements EmployeeDismiss
+final class OnEmployeeDismissRoleEventHandler implements EmployeeDismiss
 {
     public function handle(Employee $employee)
     {
