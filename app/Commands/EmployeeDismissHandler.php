@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Commands;
 
 
+use App\Entity\Employee;
 use App\Events\EmployeeDismiss;
 use App\Repository\InMemoryEmployeeRepository;
 use EventEmitter\Common\EventEmitter;
@@ -22,12 +23,16 @@ class EmployeeDismissHandler
     }
 
     /**
+     * @param EventEmitter $emitter
+     * @return Employee
      * @throws \Exception
      */
-    public function __invoke()
+    public function __invoke(EventEmitter $emitter): Employee
     {
        $employee = $this->repository->findEmployeeById($this->command->id());
-       $emitter = new EventEmitter(EmployeeDismiss::class);
-       $emitter->emit([$employee]);
+
+       $emitter->emit(EmployeeDismiss::class, [$employee]);
+
+       return $employee;
     }
 }

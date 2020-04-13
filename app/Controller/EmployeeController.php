@@ -4,23 +4,28 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Commands\EmployeeDismissCommand;
-use App\Commands\EmployeeDismissHandler;
-use App\Repository\InMemoryEmployeeRepository;
+use App\Entity\Employee;
 use App\Http\JsonResponse;
+use App\Repository\InMemoryEmployeeRepository;
 use Psr\Http\Message\ServerRequestInterface;
-use React\Http\Response;
 
 final class EmployeeController
 {
-    public function __invoke(ServerRequestInterface $request): Response
+    public function __invoke(ServerRequestInterface $request): JsonResponse
     {
-        $command = new EmployeeDismissCommand((int)$request->getBody()['id']);
+        $repository = new InMemoryEmployeeRepository();
 
-        $handler = new EmployeeDismissHandler($command, new InMemoryEmployeeRepository());
+        $employee = $repository->findAll();
 
-        $handler->__invoke();
-
-        return JsonResponse::noContent();
+        return JsonResponse::ok(
+            array_map(
+                fn(Employee $employee) => [
+                    "name" => $employee->name,
+                    "role" => $employee->role,
+                    "salary" => $employee->salary
+                ],
+                $employee
+            )
+        );
     }
 }

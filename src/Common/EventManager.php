@@ -2,11 +2,14 @@
 
 namespace EventEmitter\Common;
 
+use DI\Annotation\Inject;
+use DI\Annotation\Injectable;
 use EventEmitter\Common\Exceptions\HandlerDoesNotExistsException;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
 /**
+ * @Injectable()
  * Class EventManager
  * @package EventEmitter\Common
  */
@@ -14,8 +17,16 @@ final class EventManager
 {
     private array $handlers = [];
 
+    /**
+     * @Inject()
+     * @var EventDiscover
+     */
     private EventDiscover $discover;
 
+    /**
+     * @Inject()
+     * @var Logger
+     */
     private Logger $logger;
 
     public function __construct(EventDiscover $discover, Logger $logger)

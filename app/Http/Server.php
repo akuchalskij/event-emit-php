@@ -7,7 +7,8 @@ namespace App\Http;
 
 use FastRoute\RouteCollector;
 use Psr\Container\ContainerInterface;
-use React\EventLoop\StreamSelectLoop;
+use Psr\Http\Message\ServerRequestInterface;
+use React\EventLoop\Factory;
 
 use React\Http\Server as HttpServer;
 use React\Socket\Server as SocketServer;
@@ -15,36 +16,34 @@ use Throwable;
 
 final class Server
 {
-    private int $port;
-    private string $host;
-    private RouteCollector $collector;
-    private ContainerInterface $container;
+    private int $port = 8000;
 
-    public function __construct(int $port, string $host)
-    {
-        $this->port = $port;
-        $this->host = $host;
-    }
+    private string $host = "127.0.0.1";
+
+    private array $requestHandlers = [];
 
     public function useRouters(RouteCollector $collector)
     {
-        $this->collector = $collector;
+        $this->requestHandlers[] = new Router($collector);
     }
 
     public function useContainer(ContainerInterface $container)
     {
-        $this->container = $container;
+        $this->requestHandlers[] = $container;
     }
 
     public function run()
     {
-        $loop = new StreamSelectLoop();
-        $socket = new SocketServer($this->host.":".$this->port, $loop);
+        $loop = Factory::create();
 
-        $server = new HttpServer([new ErrorHandler(), new JsonRequestDecoder(), new Router($this->collector), $this->container]);
+        $server = new HttpServer([new ErrorHandler(), new JsonRequestDecoder(), ...$this->requestHandlers]);
+
+        $socket = new SocketServer($this->host.":".$this->port, $loop);
 
         $server->listen($socket);
         $server->on('error', fn(Throwable $error) => $error->getMessage());
+
+        echo 'Listening on ' . str_replace('tcp:', 'http:', $socket->getAddress()) . "\n";
 
         $loop->run();
     }
