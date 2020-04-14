@@ -24,7 +24,7 @@ return [
     Logger::class => create()->constructor(get('dir')),
     EventManager::class => create(EventManager::class)->constructor(get(EventDiscover::class), get(Logger::class)),
     EventEmitter::class => create()->constructor(get(EventManager::class)),
-    'namespaces' => "App\\Handlers",
+    'namespaces' => "Application\\Handlers",
     'dir' => "Handlers",
     'root' => __DIR__ . '/../',
     'psr4' => '/app/'

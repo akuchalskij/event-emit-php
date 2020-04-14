@@ -1,18 +1,27 @@
 <?php
 
-use App\Controller\EmployeeByIdController;
-use App\Controller\EmployeeController;
-use App\Controller\EmployeeDismissController;
-use App\Controller\HealthController;
+declare(strict_types=1);
+
 use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteCollector;
 use FastRoute\RouteParser\Std;
+use UI\Http\Rest\Controller\EmployeeByIdController;
+use UI\Http\Rest\Controller\EmployeeController;
+use UI\Http\Rest\Controller\EmployeeDismissController;
+use UI\Http\Rest\Controller\HealthController;
 
 $router = new RouteCollector(new Std(), new GroupCountBased());
 
-$router->get('/', new HealthController());
-$router->get('/employee/', new EmployeeController());
-$router->get('/employee/{id}/', new EmployeeByIdController());
-$router->get('/employee/{id}/dismiss/', new EmployeeDismissController());
+$router->addGroup('/v1', function (RouteCollector $route) {
+    /** Get Status Application */
+    $route->get('/health', new HealthController());
+
+    /** Work with Employees */
+    $route->addGroup('/employee', function (RouteCollector $r) {
+        $r->get('/', new EmployeeController());
+        $r->get('/{id}/', new EmployeeByIdController());
+        $r->get('/{id}/dismiss/', new EmployeeDismissController());
+    });
+});
 
 return $router;
