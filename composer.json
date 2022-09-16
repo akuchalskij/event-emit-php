@@ -14,7 +14,7 @@
         "doctrine/annotations": "^1.9",
         "symfony/finder": "^5.0",
         "symfony/http-kernel": "^5.0",
-        "react/http": "^0.8.5",
+        "react/http": "^1.7.0",
         "ext-json": "*",
         "nikic/fast-route": "^1.3"
     },
